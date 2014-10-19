@@ -14,6 +14,14 @@
 			  fill: #000;
 			}
 
+		body {
+			background-color: #E8E8E8 ;
+		}
+
+		svg {
+			background-color: white;
+		}
+
 
 	</style>
 
@@ -24,9 +32,33 @@
 
 		<script>
 
+			var lineGraph;	
+
+			var drawLine = function(x1, y1, x2, y2){
+
+			    var myLine = lineGraph.append("svg:line")
+				    .attr("x1", x1)
+				    .attr("y1", y1)
+				    .attr("x2", x2)
+				    .attr("y2", y2)
+				    .style("stroke", "rgb(6,120,155)");
+				    
+			}
+
+
 			$(document).ready(function(){
 
-			
+				var h0 = 512;
+				var unitInc = 
+				// create the canvas
+				lineGraph = d3.select("#D3line")
+				    .append("svg:svg")
+				    .attr("width", h0)   
+				    .attr("height",h0);
+
+				// test
+				drawLine(h0/2, h0/2, 1 + (h0/2), 1 + (h0/2) );
+
 
 			});
 
@@ -36,6 +68,6 @@
 	</head>
 
 	<body>
-
+		<div id="D3line"></div>
 	</body>
 </html>
