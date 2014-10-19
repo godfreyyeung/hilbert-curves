@@ -33,10 +33,10 @@
 		<script>
 
 			var lineGraph;
-			var h0 = 1000;
+			var h0 = 512;
 			var h = 10; // unit increment
 			var x, y, x0, y0;
-			var i = 6;
+			var n = 5;
 
 			//  drawLine equivalent to "plot" pseudocode function in Pascal sample code
 			var drawLine = function(x1, y1, x2, y2){
@@ -123,12 +123,13 @@
 				    .attr("width", h0)   
 				    .attr("height",h0);
 
-				x0 = h0/2 + ((h0/2)/2);
-				y0 = h0/2 + ((h0/2)/2);
-				x = x0;
-				y = y0;
-
-				drawA(i); 
+				var i = 0; h=h0; x0=h/2; y0=x0;
+				while(i < n){
+					i=i+1; h=h/2;
+					x0=x0+(h/2); y0 = y0+(h/2);
+					x=x0; y=y0;
+					drawA(i); 
+				}
 
 			});
 
