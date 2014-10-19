@@ -32,8 +32,13 @@
 
 		<script>
 
-			var lineGraph;	
+			var lineGraph;
+			var h0 = 1000;
+			var h = 10; // unit increment
+			var x, y, x0, y0;
+			var i = 6;
 
+			//  drawLine equivalent to "plot" pseudocode function in Pascal sample code
 			var drawLine = function(x1, y1, x2, y2){
 
 			    var myLine = lineGraph.append("svg:line")
@@ -42,23 +47,88 @@
 				    .attr("x2", x2)
 				    .attr("y2", y2)
 				    .style("stroke", "rgb(6,120,155)");
-				    
+
+			}
+
+			var drawA = function(i){
+				if(i>0){
+					drawD(i-1);
+					// move cursor and draw D (LEFT line).
+					// Though, in implementation, it's actually draw D then move cursor correspondingly
+					drawLine(x, y, x-h, y);
+					x = x-h;
+					drawA(i-1);
+					// draw down line
+					drawLine(x, y, x, y-h);
+					y = y-h;
+					drawA(i-1);
+					// draw right line
+					drawLine(x, y, x+h, y);
+					x = x+h;
+					drawB(i-1);
+				}
+			}
+
+			var drawB = function(i){
+				if(i>0){
+					drawC(i-1);
+					drawLine(x, y, x, y+h);
+					y = y+h;
+					drawB(i-1);
+					drawLine(x, y, x+h, y);
+					x = x+h;
+					drawB(i-1);
+					drawLine(x, y, x, y-h);
+					y = y-h;
+					drawA(i-1);
+				}
+			}
+
+			var drawC = function(i){
+				if(i>0){
+					drawB(i-1);
+					drawLine(x, y, x+h, y);
+					x = x+h;
+					drawC(i-1);
+					drawLine(x, y, x, y+h);
+					y = y+h;
+					drawC(i-1);
+					drawLine(x, y, x-h, y);
+					x = x-h;
+					drawD(i-1);
+				}
+			}
+
+			var drawD = function(i){
+				if(i>0){
+					drawA(i-1);
+					drawLine(x, y, x, y-h);
+					y = y-h;
+					drawD(i-1);
+					drawLine(x, y, x-h, y);
+					x = x-h;
+					drawD(i-1);
+					drawLine(x, y, x, y+h);
+					y = y+h;
+					drawC(i-1);
+				}
 			}
 
 
 			$(document).ready(function(){
 
-				var h0 = 512;
-				var unitInc = 
 				// create the canvas
 				lineGraph = d3.select("#D3line")
 				    .append("svg:svg")
 				    .attr("width", h0)   
 				    .attr("height",h0);
 
-				// test
-				drawLine(h0/2, h0/2, 1 + (h0/2), 1 + (h0/2) );
+				x0 = h0/2 + ((h0/2)/2);
+				y0 = h0/2 + ((h0/2)/2);
+				x = x0;
+				y = y0;
 
+				drawA(i); 
 
 			});
 
