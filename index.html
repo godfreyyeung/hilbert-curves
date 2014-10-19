@@ -14,12 +14,26 @@
 			  fill: #000;
 			}
 
-		body {
-			background-color: #E8E8E8 ;
+		#wrap {
+			width: 800px;
+			margin: 0 auto;
 		}
 
 		svg {
-			background-color: white;
+			border: 2px solid black;
+			}
+
+		#D3line {
+			width: 512px;
+			display: inline-block;
+		}
+
+		#controls {
+			display: inline-block;
+			width: 200px;
+			height: 512px;
+			padding: 15px;
+			vertical-align: top;
 		}
 
 
@@ -46,7 +60,7 @@
 				    .attr("y1", y1)
 				    .attr("x2", x2)
 				    .attr("y2", y2)
-				    .style("stroke", "rgb(6,120,155)");
+				    .style("stroke", "rgb(255, 102, 0)"); // utb 6,120,155.. but OSU is orange and black so...
 
 			}
 
@@ -114,6 +128,15 @@
 				}
 			}
 
+			var startDraw = function(n){	
+					var i = 0; h=h0; x0=h/2; y0=x0;
+					while(i < n){
+						i=i+1; h=h/2;
+						x0=x0+(h/2); y0 = y0+(h/2);
+						x=x0; y=y0;
+						drawA(i); 
+					}
+			}
 
 			$(document).ready(function(){
 
@@ -123,13 +146,14 @@
 				    .attr("width", h0)   
 				    .attr("height",h0);
 
-				var i = 0; h=h0; x0=h/2; y0=x0;
-				while(i < n){
-					i=i+1; h=h/2;
-					x0=x0+(h/2); y0 = y0+(h/2);
-					x=x0; y=y0;
-					drawA(i); 
-				}
+				startDraw(n);
+
+				$("#generate").click(function(){
+					lineGraph.selectAll("*").remove();
+					n = $("#n").val();
+					startDraw(n);
+				});
+
 
 			});
 
@@ -139,6 +163,26 @@
 	</head>
 
 	<body>
-		<div id="D3line"></div>
+	
+		<div id="wrap">
+			<h1> Hilbert Curves </h1>
+			<hr>
+			<div id="D3line"></div>
+			<div id="controls">
+				A Hilbert Curves illustration for CS321h.
+				<br><br>
+				Generate <i>n</i> number of curves from 0 - <i>i</i>th order, <i>i</i> = <i>n</i>:
+				<p><form>
+						<input type="number" name="n" id="n" style="width:50px" value="5"/>
+						<button type="button" id="generate">Generate</button>
+					</form>
+				</p>
+				Choose n > 7 at your own CPU's risk... Chrome crashes at 10.
+				<p>
+				Dr. Cull, right-click the page and select "view source" to view code. This program was written in JavaScript using the D3 visualization library.
+				</p>
+			</div>
+		</div>
+
 	</body>
 </html>
