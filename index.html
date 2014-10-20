@@ -51,6 +51,9 @@
 			var h = 10; // unit increment
 			var x, y, x0, y0;
 			var n = 5;
+			var r = 255, g = 102, b = 0;
+			var color = "rgb("+r+", "+g+", "+b+")";
+			var colorize = true;
 
 			//  drawLine equivalent to "plot" pseudocode function in Pascal sample code
 			var drawLine = function(x1, y1, x2, y2){
@@ -60,7 +63,7 @@
 				    .attr("y1", y1)
 				    .attr("x2", x2)
 				    .attr("y2", y2)
-				    .style("stroke", "rgb(255, 102, 0)"); // utb 6,120,155.. but OSU is orange and black so...
+				    .style("stroke", color); // utb 6,120,155.. but OSU is orange and black so...
 
 			}
 
@@ -130,10 +133,15 @@
 
 			var startDraw = function(n){	
 					var i = 0; h=h0; x0=h/2; y0=x0;
+					r = 255, g = 102, b = 0;
 					while(i < n){
 						i=i+1; h=h/2;
 						x0=x0+(h/2); y0 = y0+(h/2);
 						x=x0; y=y0;
+						if(colorize == true ){
+							r -= 15; g += 17; b += 30;
+						}
+						color = "rgb("+r+", "+g+", "+b+")";
 						drawA(i); 
 					}
 			}
@@ -154,6 +162,11 @@
 					startDraw(n);
 				});
 
+				$("#colorize").click(function(){
+					lineGraph.selectAll("*").remove();
+					colorize = !(colorize);
+					startDraw(n);
+				});
 
 			});
 
@@ -175,6 +188,8 @@
 				<p><form>
 						<input type="number" name="n" id="n" style="width:50px" value="5"/>
 						<button type="button" id="generate">Generate</button>
+						<br><br>
+						<input type="checkbox" name="colorize" id="colorize" checked="true"/> Multicolored
 					</form>
 				</p>
 				Choose n > 7 at your own CPU's risk... Chrome crashes at 10.
